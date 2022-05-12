@@ -1,26 +1,26 @@
 ﻿using tabuleiro;
 
-namespace xadrez
+namespace xadrez 
 {
-    class Torre : Peca
+    class Torre : Peca 
     {
 
-        public Torre(Tabuleiro tab, Cor cor) : base(tab, cor)
+        public Torre(Tabuleiro tab, Cor cor) : base(tab, cor) 
         {
         }
 
-        public override string ToString()
+        public override string ToString() 
         {
             return "T";
         }
 
-        private bool podeMover(Posicao pos)
+        private bool podeMover(Posicao pos) 
         {
             Peca p = tab.peca(pos);
             return p == null || p.cor != cor;
         }
 
-        public override bool[,] movimentosPossiveis()
+        public override bool[,] movimentosPossiveis() 
         {
             bool[,] mat = new bool[tab.linhas, tab.colunas];
 
@@ -28,10 +28,10 @@ namespace xadrez
 
             // acima
             pos.definirValores(posicao.linha - 1, posicao.coluna);
-            while (tab.posicaoValida(pos) && podeMover(pos))
+            while (tab.posicaoValida(pos) && podeMover(pos)) 
             {
                 mat[pos.linha, pos.coluna] = true;
-                if (tab.peca(pos) != null && tab.peca(pos).cor != cor)
+                if (tab.peca(pos) != null && tab.peca(pos).cor != cor) 
                 {
                     break;
                 }
@@ -40,10 +40,10 @@ namespace xadrez
 
             // abaixo
             pos.definirValores(posicao.linha + 1, posicao.coluna);
-            while (tab.posicaoValida(pos) && podeMover(pos))
+            while (tab.posicaoValida(pos) && podeMover(pos)) 
             {
                 mat[pos.linha, pos.coluna] = true;
-                if (tab.peca(pos) != null && tab.peca(pos).cor != cor)
+                if (tab.peca(pos) != null && tab.peca(pos).cor != cor) 
                 {
                     break;
                 }
@@ -52,10 +52,10 @@ namespace xadrez
 
             // direita
             pos.definirValores(posicao.linha, posicao.coluna + 1);
-            while (tab.posicaoValida(pos) && podeMover(pos))
+            while (tab.posicaoValida(pos) && podeMover(pos)) 
             {
                 mat[pos.linha, pos.coluna] = true;
-                if (tab.peca(pos) != null && tab.peca(pos).cor != cor)
+                if (tab.peca(pos) != null && tab.peca(pos).cor != cor) 
                 {
                     break;
                 }
@@ -64,10 +64,10 @@ namespace xadrez
 
             // esquerda
             pos.definirValores(posicao.linha, posicao.coluna - 1);
-            while (tab.posicaoValida(pos) && podeMover(pos))
+            while (tab.posicaoValida(pos) && podeMover(pos)) 
             {
                 mat[pos.linha, pos.coluna] = true;
-                if (tab.peca(pos) != null && tab.peca(pos).cor != cor)
+                if (tab.peca(pos) != null && tab.peca(pos).cor != cor) 
                 {
                     break;
                 }
