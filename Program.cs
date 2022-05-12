@@ -2,22 +2,25 @@
 using tabuleiro;
 using xadrez;
 
-namespace xadrez_console 
+namespace xadrez_console
 {
-    class Program {
-        static void Main(string[] args) 
+    class Program
+    {
+        static void Main(string[] args)
         {
 
-            try {
+            try
+            {
                 PartidaDeXadrez partida = new PartidaDeXadrez();
 
-                while (!partida.terminada) 
+                while (!partida.terminada)
                 {
+
                     try
                     {
                         Console.Clear();
                         Tela.imprimirPartida(partida);
-                                    
+
                         Console.WriteLine();
                         Console.Write("Origem: ");
                         Posicao origem = Tela.lerPosicaoXadrez().toPosicao();
@@ -41,9 +44,10 @@ namespace xadrez_console
                         Console.ReadLine();
                     }
                 }
-
+                Console.Clear();
+                Tela.imprimirPartida(partida);
             }
-            catch (TabuleiroException e) 
+            catch (TabuleiroException e)
             {
                 Console.WriteLine(e.Message);
             }
