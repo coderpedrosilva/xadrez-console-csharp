@@ -28,14 +28,12 @@ namespace xadrez
             colocarPecas();
         }
 
-        public Peca executaMovimento(Posicao origem, Posicao destino) 
-        {
+        public Peca executaMovimento(Posicao origem, Posicao destino) {
             Peca p = tab.retirarPeca(origem);
             p.incrementarQteMovimentos();
             Peca pecaCapturada = tab.retirarPeca(destino);
             tab.colocarPeca(p, destino);
-            if (pecaCapturada != null)
-            {
+            if (pecaCapturada != null) {
                 capturadas.Add(pecaCapturada);
             }
 
@@ -60,13 +58,11 @@ namespace xadrez
             }
 
             // #jogadaespecial en passant
-            if (p is Peao) 
-            {
+            if (p is Peao) {
                 if (origem.coluna != destino.coluna && pecaCapturada == null) 
                 {
                     Posicao posP;
-                    if (p.cor == Cor.Branca) 
-                    {
+                    if (p.cor == Cor.Branca) {
                         posP = new Posicao(destino.linha + 1, destino.coluna);
                     }
                     else {
@@ -84,17 +80,14 @@ namespace xadrez
         {
             Peca p = tab.retirarPeca(destino);
             p.decrementarQteMovimentos();
-            if (pecaCapturada != null) 
-            
-            {
+            if (pecaCapturada != null) {
                 tab.colocarPeca(pecaCapturada, destino);
                 capturadas.Remove(pecaCapturada);
             }
             tab.colocarPeca(p, origem);
 
             // #jogadaespecial roque pequeno
-            if (p is Rei && destino.coluna == origem.coluna + 2) 
-            {
+            if (p is Rei && destino.coluna == origem.coluna + 2) {
                 Posicao origemT = new Posicao(origem.linha, origem.coluna + 3);
                 Posicao destinoT = new Posicao(origem.linha, origem.coluna + 1);
                 Peca T = tab.retirarPeca(destinoT);
@@ -113,18 +106,15 @@ namespace xadrez
             }
 
             // #jogadaespecial en passant
-            if (p is Peao) 
-            {
+            if (p is Peao) {
                 if (origem.coluna != destino.coluna && pecaCapturada == vulneravelEnPassant) 
                 {
                     Peca peao = tab.retirarPeca(destino);
                     Posicao posP;
-                    if (p.cor == Cor.Branca) 
-                    {
+                    if (p.cor == Cor.Branca) {
                         posP = new Posicao(3, destino.coluna);
                     }
-                    else 
-                    {
+                    else {
                         posP = new Posicao(4, destino.coluna);
                     }
                     tab.colocarPeca(peao, posP);
@@ -136,10 +126,23 @@ namespace xadrez
         {
             Peca pecaCapturada = executaMovimento(origem, destino);
 
-            if (estaEmXeque(jogadorAtual)) 
-            {
+            if (estaEmXeque(jogadorAtual)) {
                 desfazMovimento(origem, destino, pecaCapturada);
                 throw new TabuleiroException("Você não pode se colocar em xeque!");
+            }
+
+            Peca p = tab.peca(destino);
+
+            // #jogadaespecial promocao
+            if (p is Peao) {
+                if ((p.cor == Cor.Branca && destino.linha == 0) || (p.cor == Cor.Preta && destino.linha == 7)) 
+                {
+                    p = tab.retirarPeca(destino);
+                    pecas.Remove(p);
+                    Peca dama = new Dama(tab, p.cor);
+                    tab.colocarPeca(dama, destino);
+                    pecas.Add(dama);
+                }
             }
 
             if (estaEmXeque(adversaria(jogadorAtual))) 
@@ -159,8 +162,6 @@ namespace xadrez
                 mudaJogador();
             }
 
-            Peca p = tab.peca(destino);
-
             // #jogadaespecial en passant
             if (p is Peao && (destino.linha == origem.linha - 2 || destino.linha == origem.linha + 2)) 
             {
@@ -173,18 +174,14 @@ namespace xadrez
 
         }
 
-        public void validarPosicaoDeOrigem(Posicao pos) 
-        {
-            if (tab.peca(pos) == null) 
-            {
+        public void validarPosicaoDeOrigem(Posicao pos) {
+            if (tab.peca(pos) == null) {
                 throw new TabuleiroException("Não existe peça na posição de origem escolhida!");
             }
-            if (jogadorAtual != tab.peca(pos).cor) 
-            {
+            if (jogadorAtual != tab.peca(pos).cor) {
                 throw new TabuleiroException("A peça de origem escolhida não é sua!");
             }
-            if (!tab.peca(pos).existeMovimentosPossiveis()) 
-            {
+            if (!tab.peca(pos).existeMovimentosPossiveis()) {
                 throw new TabuleiroException("Não há movimentos possíveis para a peça de origem escolhida!");
             }
         }
@@ -203,8 +200,7 @@ namespace xadrez
             {
                 jogadorAtual = Cor.Preta;
             }
-            else 
-            {
+            else {
                 jogadorAtual = Cor.Branca;
             }
         }
@@ -212,8 +208,10 @@ namespace xadrez
         public HashSet<Peca> pecasCapturadas(Cor cor) 
         {
             HashSet<Peca> aux = new HashSet<Peca>();
-            foreach (Peca x in capturadas) {
-                if (x.cor == cor) {
+            foreach (Peca x in capturadas) 
+            {
+                if (x.cor == cor) 
+                {
                     aux.Add(x);
                 }
             }
@@ -223,8 +221,10 @@ namespace xadrez
         public HashSet<Peca> pecasEmJogo(Cor cor)
         {
             HashSet<Peca> aux = new HashSet<Peca>();
-            foreach (Peca x in pecas) {
-                if (x.cor == cor) {
+            foreach (Peca x in pecas) 
+            {
+                if (x.cor == cor)
+                {
                     aux.Add(x);
                 }
             }
@@ -243,8 +243,7 @@ namespace xadrez
             }
         }
 
-        private Peca rei(Cor cor) 
-        {
+        private Peca rei(Cor cor) {
             foreach (Peca x in pecasEmJogo(cor)) 
             {
                 if (x is Rei) 
@@ -258,8 +257,7 @@ namespace xadrez
         public bool estaEmXeque(Cor cor) 
         {
             Peca R = rei(cor);
-            if (R == null) 
-            {
+            if (R == null) {
                 throw new TabuleiroException("Não tem rei da cor " + cor + " no tabuleiro!");
             }
             foreach (Peca x in pecasEmJogo(adversaria(cor))) 
@@ -310,8 +308,7 @@ namespace xadrez
             pecas.Add(peca);
         }
 
-        private void colocarPecas() 
-        {
+        private void colocarPecas() {
             colocarNovaPeca('a', 1, new Torre(tab, Cor.Branca));
             colocarNovaPeca('b', 1, new Cavalo(tab, Cor.Branca));
             colocarNovaPeca('c', 1, new Bispo(tab, Cor.Branca));
