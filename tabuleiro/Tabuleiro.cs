@@ -1,4 +1,5 @@
-﻿namespace tabuleiro {
+﻿namespace tabuleiro 
+{
     class Tabuleiro 
     {
 
@@ -40,7 +41,8 @@
 
         public Peca retirarPeca(Posicao pos) 
         {
-            if (peca(pos) == null) {
+            if (peca(pos) == null) 
+            {
                 return null;
             }
             Peca aux = peca(pos);
@@ -51,7 +53,8 @@
 
         public bool posicaoValida(Posicao pos) 
         {
-            if (pos.linha<0 || pos.linha>=linhas || pos.coluna<0 || pos.coluna>=colunas) {
+            if (pos.linha<0 || pos.linha>=linhas || pos.coluna<0 || pos.coluna>=colunas) 
+            {
                 return false;
             }
             return true;
@@ -59,7 +62,8 @@
 
         public void validarPosicao(Posicao pos) 
         {
-            if (!posicaoValida(pos)) {
+            if (!posicaoValida(pos)) 
+            {
                 throw new TabuleiroException("Posição inválida!");
             }
         }
